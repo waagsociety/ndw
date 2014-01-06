@@ -1,4 +1,4 @@
-Het koppelen van wegvakken aan meetpunten.
+#Het koppelen van wegvakken aan meetpunten.
 
 ##1. nbw beschrijving:
 
@@ -19,10 +19,13 @@ Bij geografische wijzigingen in het netwerk, zoals vormveranderingen van wegvakk
 
 head van wegen databestand:
 
+`````
 WVK_ID,WVK_BEGDAT,JTE_ID_BEG,JTE_ID_END,WEGBEHSRT,WEGNUMMER,WEGDEELLTR,HECTO_LTTR,BAANSUBSRT,RPE_CODE,ADMRICHTNG,RIJRICHTNG,STT_NAAM,WPSNAAMNEN,GME_ID,GME_NAAM,HNRSTRLNKS,HNRSTRRHTS,E_HNR_LNKS,E_HNR_RHTS,L_HNR_LNKS,L_HNR_RHTS,BEGAFSTAND,ENDAFSTAND,BEGINKM,EINDKM,POS_TV_WOL
+`````
 
 uitleg velden:
 
+`````
 FNODE#
 JTE_ID_BEGIN (beginjunctie)
 ADMRICHTNG
@@ -73,16 +76,15 @@ RPE_CODE
 E_HNR_LINKS (eerste huisnummer links)
 LIJN_LEN
 ( dit veld wordt niet gevuld)
+`````
 
 we hebben dus wegnummer, beginafstand en eindafstand voor ieder wegvak.
 
-### 2. NDW beschrijving
+## 2. NDW beschrijving
 
 Het locatie gedeelte van een meetpunt ziet er als volgt uit:
 
-5.1.4.1.4
-Voorbeeld in XML
-Een voorbeeld van een gedefinieerde measurementSiteLocation is als volgt:
+`````
 <measurementSiteLocationxsi:type="Point">
 <locationForDisplay>
 <latitude>51.6587</latitude>
@@ -105,16 +107,19 @@ Een voorbeeld van een gedefinieerde measurementSiteLocation is als volgt:
 </alertCMethod4PrimaryPointLocation>
 </alertCPoint>
 </measurementSiteLocation>
-
+`````
 Als we dan kijken in de VILD database vinden we de volgende attributen:
 
+`````
 LOC_NR,LOC_TYPE,LOC_DES,ROADNUMBER,ROADNAME,FIRST_NAME,SECND_NAME,JUNCT_REF,EXIT_NR,HSTART_POS,HEND_POS,HSTART_NEG,HEND_NEG,HECTO_CHAR,HECTO_DIR,POS_IN,POS_OUT,NEG_IN,NEG_OUT,DIR,AREA_REF,LIN_REF,INTER_REF,POS_OFF,NEG_OFF,URBAN_CODE,PRES_POS,PRES_NEG,FAR_AWAY,CITY_DISTR,TOP_SIGN,TYPE_CODE,MW_REF,RW_NR,AW_REF
+`````
 
 Voor bovenstaand voorbeeld is dat:
 9365,P1.2,Knooppunt (triangle),A50,,Paalgraven,A59,9365,,1316,1316,1315,1315,,1,1,0,0,1,,2719,3349,9835,9367,9487,0,1,1,0,,,0,484,50,582
 
 In dit geval is de offset 0, dus het meetpunt ligt precies op dit knooppunt, waarvan we het wegnummer hebben, en hectometerstartpos / endpos, direction etc.
 
-Het lijkt me dat de koppeling dan gemaakt kan worden door te kijken of dit meetpunt ligt tussen het begin en eind hectopunt van een van de wegvakken met hetzelfde wegnummer.
+##3. Koppeling
 
+De koppeling kan worden gemaakt door te kijken of de hectometer locatie van een meetpunt ligt tussen het begin en eind hectopunt van een van de wegvakken met hetzelfde wegnummer.
  
