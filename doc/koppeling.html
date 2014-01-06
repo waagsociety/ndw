@@ -95,8 +95,9 @@ LIJN_LEN
 &lt;/measurementSiteLocation&gt;</code></pre>
 <p>Als we dan kijken in de VILD database vinden we de volgende attributen:</p>
 <pre><code>LOC_NR,LOC_TYPE,LOC_DES,ROADNUMBER,ROADNAME,FIRST_NAME,SECND_NAME,JUNCT_REF,EXIT_NR,HSTART_POS,HEND_POS,HSTART_NEG,HEND_NEG,HECTO_CHAR,HECTO_DIR,POS_IN,POS_OUT,NEG_IN,NEG_OUT,DIR,AREA_REF,LIN_REF,INTER_REF,POS_OFF,NEG_OFF,URBAN_CODE,PRES_POS,PRES_NEG,FAR_AWAY,CITY_DISTR,TOP_SIGN,TYPE_CODE,MW_REF,RW_NR,AW_REF</code></pre>
-<p>Voor bovenstaand voorbeeld is dat: 9365,P1.2,Knooppunt (triangle),A50,,Paalgraven,A59,9365,,1316,1316,1315,1315,,1,1,0,0,1,,2719,3349,9835,9367,9487,0,1,1,0,,,0,484,50,582</p>
+<p>Voor bovenstaand voorbeeld is dat: <code>9365,P1.2,Knooppunt (triangle),A50,,Paalgraven,A59,9365,,1316,1316,1315,1315,,1,1,0,0,1,,2719,3349,9835,9367,9487,0,1,1,0,,,0,484,50,582</code></p>
 <p>In dit geval is de offset 0, dus het meetpunt ligt precies op dit knooppunt, waarvan we het wegnummer hebben, en hectometerstartpos / endpos, direction etc.</p>
-<p>Het lijkt me dat de koppeling dan gemaakt kan worden door te kijken of dit meetpunt ligt tussen het begin en eind hectopunt van een van de wegvakken met hetzelfde wegnummer.</p>
+<h2 id="koppeling">3. Koppeling</h2>
+<p>De koppeling kan worden gemaakt door te kijken of de hectometer locatie van een meetpunt ligt tussen het begin en eind hectopunt van een van de wegvakken met hetzelfde wegnummer.</p>
 </body>
 </html>

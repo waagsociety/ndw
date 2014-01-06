@@ -115,7 +115,9 @@ LOC_NR,LOC_TYPE,LOC_DES,ROADNUMBER,ROADNAME,FIRST_NAME,SECND_NAME,JUNCT_REF,EXIT
 `````
 
 Voor bovenstaand voorbeeld is dat:
+`````
 9365,P1.2,Knooppunt (triangle),A50,,Paalgraven,A59,9365,,1316,1316,1315,1315,,1,1,0,0,1,,2719,3349,9835,9367,9487,0,1,1,0,,,0,484,50,582
+`````
 
 In dit geval is de offset 0, dus het meetpunt ligt precies op dit knooppunt, waarvan we het wegnummer hebben, en hectometerstartpos / endpos, direction etc.
 
