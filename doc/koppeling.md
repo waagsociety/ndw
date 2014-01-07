@@ -1,6 +1,6 @@
-#Het koppelen van wegvakken aan meetpunten.
+# Het koppelen van wegvakken aan meetpunten.
 
-##1. nbw beschrijving:
+## Beschrijving NBW
 
 Dynamic Segmentation is in GIS-systemen een veel gebruikte techniek om voor presentatie- en analysedoeleinden gegevens te koppelen aan wegenbestanden zoals het Nationaal Wegenbestand. Met behulp van  Dynamic Segmentation wordt – bovenop de laag met wegvakken in het NWB – een routenetwerk gecreëerd waarlangs een meetlat te leggen is  waardoor gebruik kan worden gemaakt van relatieve plaatsbepaling t.o.v een beginpunt in plaats van te werken met x- en y-coördinaten. 
 
@@ -80,48 +80,46 @@ LIJN_LEN
 
 we hebben dus wegnummer, beginafstand en eindafstand voor ieder wegvak.
 
-## 2. NDW beschrijving
+## Beschrijving NDW
 
 Het locatie gedeelte van een meetpunt ziet er als volgt uit:
 
-`````
-<measurementSiteLocationxsi:type="Point">
-<locationForDisplay>
-<latitude>51.6587</latitude>
-<longitude>5.1459</longitude>
-</locationForDisplay>
-<alertCPointxsi:type="AlertCMethod4Point">
-<alertCLocationCountryCode>8</alertCLocationCountryCode>
-<alertCLocationTableNumber>5.1</alertCLocationTableNumber>
-<alertCLocationTableVersion>A</alertCLocationTableVersion>
-<alertCDirection>
-<alertCDirectionCoded>positive</alertCDirectionCoded>
-</alertCDirection>
-<alertCMethod4PrimaryPointLocation>
-<alertCLocation>
-<specificLocation>9365</specificLocation>
-</alertCLocation>
-<offsetDistance>
-<offsetDistance>0</offsetDistance>
-</offsetDistance>
-</alertCMethod4PrimaryPointLocation>
-</alertCPoint>
-</measurementSiteLocation>
-`````
+
+    <measurementSiteLocationxsi:type="Point">
+      <locationForDisplay>
+        <latitude>51.6587</latitude>
+        <longitude>5.1459</longitude>
+      </locationForDisplay>
+      <alertCPointxsi:type="AlertCMethod4Point">
+        <alertCLocationCountryCode>8</alertCLocationCountryCode>
+        <alertCLocationTableNumber>5.1</alertCLocationTableNumber>
+        <alertCLocationTableVersion>A</alertCLocationTableVersion>
+        <alertCDirection>
+          <alertCDirectionCoded>positive</alertCDirectionCoded>
+        </alertCDirection>
+        <alertCMethod4PrimaryPointLocation>
+          <alertCLocation>
+            <specificLocation>9365</specificLocation>
+          </alertCLocation>
+          <offsetDistance>
+            <offsetDistance>0</offsetDistance>
+          </offsetDistance>
+        </alertCMethod4PrimaryPointLocation>
+      </alertCPoint>
+    </measurementSiteLocation>
+
 Als we dan kijken in de VILD database vinden we de volgende attributen:
 
-`````
-LOC_NR,LOC_TYPE,LOC_DES,ROADNUMBER,ROADNAME,FIRST_NAME,SECND_NAME,JUNCT_REF,EXIT_NR,HSTART_POS,HEND_POS,HSTART_NEG,HEND_NEG,HECTO_CHAR,HECTO_DIR,POS_IN,POS_OUT,NEG_IN,NEG_OUT,DIR,AREA_REF,LIN_REF,INTER_REF,POS_OFF,NEG_OFF,URBAN_CODE,PRES_POS,PRES_NEG,FAR_AWAY,CITY_DISTR,TOP_SIGN,TYPE_CODE,MW_REF,RW_NR,AW_REF
-`````
+    LOC_NR,LOC_TYPE,LOC_DES,ROADNUMBER,ROADNAME,FIRST_NAME,SECND_NAME,JUNCT_REF,EXIT_NR,HSTART_POS,HEND_POS,HSTART_NEG,HEND_NEG,HECTO_CHAR,HECTO_DIR,POS_IN,POS_OUT,NEG_IN,NEG_OUT,DIR,AREA_REF,LIN_REF,INTER_REF,POS_OFF,NEG_OFF,URBAN_CODE,PRES_POS,PRES_NEG,FAR_AWAY,CITY_DISTR,TOP_SIGN,TYPE_CODE,MW_REF,RW_NR,AW_REF
 
 Voor bovenstaand voorbeeld is dat:
-`````
-9365,P1.2,Knooppunt (triangle),A50,,Paalgraven,A59,9365,,1316,1316,1315,1315,,1,1,0,0,1,,2719,3349,9835,9367,9487,0,1,1,0,,,0,484,50,582
-`````
+
+    9365,P1.2,Knooppunt (triangle),A50,,Paalgraven,A59,9365,,1316,1316,1315,1315,,1,1,0,0,1,,2719,3349,9835,9367,9487,0,1,1,0,,,0,484,50,582
+
 
 In dit geval is de offset 0, dus het meetpunt ligt precies op dit knooppunt, waarvan we het wegnummer hebben, en hectometerstartpos / endpos, direction etc.
 
-##3. Koppeling
+## Koppeling
 
 De koppeling kan worden gemaakt door te kijken of de hectometer locatie van een meetpunt ligt tussen het begin en eind hectopunt van een van de wegvakken met hetzelfde wegnummer.
  
