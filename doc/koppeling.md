@@ -4,7 +4,7 @@
 
 Dynamic Segmentation is in GIS-systemen een veel gebruikte techniek om voor presentatie- en analysedoeleinden gegevens te koppelen aan wegenbestanden zoals het Nationaal Wegenbestand. Met behulp van  Dynamic Segmentation wordt – bovenop de laag met wegvakken in het NWB – een routenetwerk gecreëerd waarlangs een meetlat te leggen is  waardoor gebruik kan worden gemaakt van relatieve plaatsbepaling t.o.v een beginpunt in plaats van te werken met x- en y-coördinaten. 
 
-Bij Rijkswaterstaat worden veel wegkenmerken opgeslagen in bestanden waarbij als lokatiereferentie wegnummer en de afstand tot de nabijgelegen hectometerpaal wordt gebruikt..
+Bij Rijkswaterstaat worden veel wegkenmerken opgeslagen in bestanden waarbij als lokatiereferentie wegnummer en de afstand tot de nabijgelegen hectometerpaal wordt gebruikt.
 Het NWB-wegen bevat  de positie van hectopalen bij rijkswegen en daardoor is het mogelijk naast het direct koppelen aan wegvakken op basis van coördinaten , ook te koppelen op basis van  hectometrerings gegevens van wegvakken. 
 Middels dynamic segmentation  kunnen lijn- en puntgegevens  aan het netwerk worden gekoppeld  met gebruikmaking van ‘kilometer-naar’ en ‘kilometer-van’ , die afgeleid kan worden uit de  positie van de hectometerborden langs de weg. 
 
