@@ -6,12 +6,19 @@ http://goo.gl/maps/4Da2M
 ![image](hoofddorp_meetlocatie_19646.png)
 Meetlocatie: `11761`
 
+    "cw":        "mainCarriageway",
+    "direction": "negative",
+    "distance":  500,
+    "id":        11761,
+    "location":  19646
+
+
 ![image](hoofddorp_tmc-point_19646.png)
 VILD-locatie: `19646`
 
 Positionering van meetlocaties t.o.v. VILD-locaties wordt uitgelegd op pagina 25 van `NDWInterfacebeschrijvingversie2.2.pdf`. 
 
-Velden uit VILD-database worden uitgelegd op pagina 104 van `VILD5.2ATechnischHandboek2008.pdf`.
+Eeen aantal van de Velden uit VILD-database worden uitgelegd op pagina 104 van `VILD5.2ATechnischHandboek2008.pdf`.
 
 Alle data uit VILD-database, voor VILD-locatie `19646`:
 
@@ -57,7 +64,7 @@ Verklaring van de velden:
 
     {
       "LOC_NR":       ,
-      "LOC_TYPE":     ,
+      "LOC_TYPE":     "Type van VILD-punt, in dit geval knooppunt/triangle",
       "LOC_DES":      ,
       "ROADNUMBER":   ,
       "ROADNAME":     ,
@@ -92,3 +99,28 @@ Verklaring van de velden:
       "RW_NR":        ,
       "AW_REF":       
     }
+
+
+## Van hectometeraanduiding in VILD naar hectometerposities in wegenbestand
+
+    "ROADNUMBER":   "A5",
+    "HSTART_POS":   10,
+    "HEND_POS":     10,
+    "HSTART_NEG":   14,
+    "HEND_NEG":     5,
+
+    
+We pakken hectopunt 10 op de A5:
+
+    "AFSTAND": 450,
+    "WVK_ID": 219355036    
+    
+    
+    
+En dan grijpen we wegvak `219355036`:
+
+    "WVK_ID":     219355036,
+    "ADMRICHTNG": "H",
+    "GME_NAAM":   "Haarlemmermeer"
+    
+    
