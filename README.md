@@ -9,7 +9,11 @@ Meetlocatie: `11761`
 ![image](hoofddorp_tmc-point_19646.png)
 VILD-locatie: `19646`
 
-Data uit VILD-database: 
+Positionering van meetlocaties t.o.v. VILD-locaties wordt uitgelegd op pagina 25 van `NDWInterfacebeschrijvingversie2.2.pdf`. 
+
+Velden uit VILD-database worden uitgelegd op pagina 104 van `VILD5.2ATechnischHandboek2008.pdf`.
+
+Alle data uit VILD-database, voor VILD-locatie `19646`:
 
     {
       "LOC_NR":       19646,
