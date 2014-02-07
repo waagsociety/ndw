@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export LC_CTYPE=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 mkdir nwb
 mkdir ndw
 mkdir vild
@@ -17,7 +20,8 @@ mv tmp/nwb-wegen/geogegevens/shapefile/nederland_totaal/* nwb/
 
 # VILD ###########################################################################
 
-# VILD files are in git repo, NDW uses download system with session ids...
+# VILD files are in git repo and not downloaded by this script from NDW site:
+# NDW uses download system with session ids...
 
 # Create vild.sql with absolute path to vild.csv
 ruby vild_sql.rb > tmp/vild.sql
