@@ -5,7 +5,6 @@ export LANG=en_US.UTF-8
 
 mkdir nwb
 mkdir ndw
-mkdir vild
 mkdir tmp
 
 #################################################################################
