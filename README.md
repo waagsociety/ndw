@@ -1,126 +1,105 @@
-# Meetlocatie
+# Linking NDW and NWB
 
-Onderzoek, meetpunt 11761 op kruising A4 en A5 bij Hoofddorp
-http://goo.gl/maps/4Da2M
+## Software prerequisites:
 
-![image](hoofddorp_meetlocatie_19646.png)
-Meetlocatie: `11761`
+Install PostgreSQL/PostGIS, Ruby, Ruby gems:
 
-    "cw":        "mainCarriageway",
-    "direction": "negative",
-    "distance":  500,
-    "id":        11761,
-    "location":  19646
+    brew install postgis
+    brew install ruby
+    
+    gem install sequel
+    gem install ox
+ 
+Create database `ndw`, install PostGIS extension: `CREATE EXTENSION postgis;`  
 
+Download data, convert to shapefiles, import into database:
 
-![image](hoofddorp_tmc-point_19646.png)
-VILD-locatie: `19646`
+    cd data
+    ./create_tables.sh    
 
-Positionering van meetlocaties t.o.v. VILD-locaties wordt uitgelegd op pagina 25 van `NDWInterfacebeschrijvingversie2.2.pdf`. 
+## Example queries
 
-Eeen aantal van de Velden uit VILD-database worden uitgelegd op pagina 104 van `VILD5.2ATechnischHandboek2008.pdf`.
+Find out which field to use: `admrichtng`, `rpe_code`, or `pos_tv_wol`.
+  
+  
+  
+  
+SELECT DISTINCT
+wv.wvk_id::int
+FROM mst m 
+JOIN tmcpoints
+        ON loc_nr = m.location
+        JOIN vild v
+        ON m.location = v.loc_nr
+        JOIN wegvakken wv2
+        ON lpad(substring(roadnumber from 2 for length(roadnumber)), 3, '000') = wegnummer
+        JOIN hectopunten hp
+        ON (
+        CASE direction WHEN 'positive' THEN hp.hectomtrng = hstart_pos
+                       WHEN 'negative' THEN hp.hectomtrng = hstart_neg
+        END
+        ) AND hp.wvk_id = wv2.wvk_id
+        JOIN wegvakken wv
+        ON wv.wegnummer = wv2.wegnummer
+        WHERE 
+        wv.rijrichtng = wv2.rijrichtng
+        AND
+        wv.rpe_code = wv2.rpe_code
+	      AND
+        (
+        CASE wv.rpe_code WHEN 'R' 
+        THEN wv2.beginkm * 1000 + afstand + distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) BETWEEN wv.beginkm * 1000 AND wv.eindkm * 1000
+        ELSE wv2.beginkm * 1000 + afstand - distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) BETWEEN wv.eindkm * 1000 AND wv.beginkm * 1000
+        END
+        )
+        AND
+        m.id = '10223'; -- A27  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    CREATE TYPE wvktype AS (wvk_id int);
 
-Alle data uit VILD-database, voor VILD-locatie `19646`:
-
-    {
-      "LOC_NR":       19646,
-      "LOC_TYPE":     "P1.2",
-      "LOC_DES":      "Knooppunt (triangle)",
-      "ROADNUMBER":   "A5",
-      "ROADNAME":     null,
-      "FIRST_NAME":   "De Hoek",
-      "SECND_NAME":   "A4",
-      "JUNCT_REF":    19646,
-      "EXIT_NR":      null,
-      "HSTART_POS":   10,
-      "HEND_POS":     10,
-      "HSTART_NEG":   14,
-      "HEND_NEG":     5,
-      "HECTO_CHAR":   null,
-      "HECTO_DIR":    1,
-      "POS_IN":       0,
-      "POS_OUT":      1,
-      "NEG_IN":       1,
-      "NEG_OUT":      1,
-      "DIR":          null,
-      "AREA_REF":     2433,
-      "LIN_REF":      6338,
-      "INTER_REF":    9240,
-      "POS_OFF":      19648,
-      "NEG_OFF":      0,
-      "URBAN_CODE":   0,
-      "PRES_POS":     1,
-      "PRES_NEG":     1,
-      "FAR_AWAY":     0,
-      "CITY_DISTR":   null,
-      "TOP_SIGN":     null,
-      "TYPE_CODE":    0,
-      "MW_REF":       443,
-      "RW_NR":        5,
-      "AW_REF":       420
-    }
-
-Verklaring van de velden:
-
-    {
-      "LOC_NR":       ,
-      "LOC_TYPE":     "Type van VILD-punt, in dit geval knooppunt/triangle",
-      "LOC_DES":      ,
-      "ROADNUMBER":   ,
-      "ROADNAME":     ,
-      "FIRST_NAME":   ,
-      "SECND_NAME":   ,
-      "JUNCT_REF":    ,
-      "EXIT_NR":      ,
-      "HSTART_POS":   ,
-      "HEND_POS":     ,
-      "HSTART_NEG":   ,
-      "HEND_NEG":     ,
-      "HECTO_CHAR":   ,
-      "HECTO_DIR":    ,
-      "POS_IN":       ,
-      "POS_OUT":      ,
-      "NEG_IN":       ,
-      "NEG_OUT":      ,
-      "DIR":          ,
-      "AREA_REF":     ,
-      "LIN_REF":      "ID van lijn in tmc-line",
-      "INTER_REF":    ,
-      "POS_OFF":      ,
-      "NEG_OFF":      ,
-      "URBAN_CODE":   ,
-      "PRES_POS":     ,
-      "PRES_NEG":     ,
-      "FAR_AWAY":     ,
-      "CITY_DISTR":   ,
-      "TOP_SIGN":     ,
-      "TYPE_CODE":    ,
-      "MW_REF":       ,
-      "RW_NR":        ,
-      "AW_REF":       
-    }
+    CREATE OR REPLACE FUNCTION mst2wegvak(_id text) 
+    RETURNS SETOF wvktype
+    AS $$
+    BEGIN
+      RETURN QUERY
+        SELECT DISTINCT
+        wv.wvk_id::int
+        FROM mst m 
+        JOIN tmcpoints
+        ON loc_nr = m.location
+        JOIN vild v
+        ON m.location = v.loc_nr
+        JOIN wegvakken wv2
+        ON lpad(substring(roadnumber from 2 for length(roadnumber)), 3, '000') = wegnummer
+        JOIN hectopunten hp
+        ON (
+        CASE direction WHEN 'positive' THEN hp.hectomtrng = hstart_pos
+                       WHEN 'negative' THEN hp.hectomtrng = hstart_neg
+        END
+        ) AND hp.wvk_id = wv2.wvk_id
+        JOIN wegvakken wv
+        ON wv.wegnummer = wv2.wegnummer
+        WHERE 
+        wv.rijrichtng = wv2.rijrichtng
+        AND 
+        (wv2.beginkm * 1000 + afstand + distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) BETWEEN wv.beginkm * 1000 AND wv.eindkm * 1000)
+        AND
+        m.id = _id;
+    END $$ LANGUAGE plpgsql IMMUTABLE;
 
 
-## Van hectometeraanduiding in VILD naar hectometerposities in wegenbestand
+    SELECT mst2wegvak('10223');
 
-    "ROADNUMBER":   "A5",
-    "HSTART_POS":   10,
-    "HEND_POS":     10,
-    "HSTART_NEG":   14,
-    "HEND_NEG":     5,
 
     
-We pakken hectopunt 10 op de A5:
-
-    "AFSTAND": 450,
-    "WVK_ID": 219355036    
-    
-    
-    
-En dan grijpen we wegvak `219355036`:
-
-    "WVK_ID":     219355036,
-    "ADMRICHTNG": "H",
-    "GME_NAAM":   	"Haarlemmermeer"
-    
-    
+   
