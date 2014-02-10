@@ -29,6 +29,7 @@ class MST2GeoJSON < ::Ox::Sax
     		:properties => {
     		  id: @data[:id],     
     		  name: @data[:name],
+          location: @data[:location],
           carriagewy: @data[:carriageway],
           direction: @data[:direction],
           distance: @data[:distance]   
