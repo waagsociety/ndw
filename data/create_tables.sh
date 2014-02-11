@@ -40,25 +40,25 @@ ogr2ogr -f "ESRI Shapefile" ndw/mst.shp tmp/mst.geojson
 
 # Meetlocaties
 shp2pgsql -s 28992:4326  -I -c -W UTF-8 ndw/mst.shp mst > tmp/mst.sql
-psql -h localhost -U postgres -d ndw -f tmp/mst.sql
+psql -h localhost -U postgres -d ndw -f tmp/mst.sql > /dev/null
 
 # Wegvakken
 shp2pgsql -s 28992:4326  -I -c -W UTF-8 nwb/Wegvakken.shp wegvakken > tmp/wegvakken.sql
-psql -h localhost -U postgres -d ndw -f tmp/wegvakken.sql
+psql -h localhost -U postgres -d ndw -f tmp/wegvakken.sql > /dev/null
 
 # Hectopunten
 shp2pgsql -s 28992:4326  -I -c -W UTF-8 nwb/Hectopunten.shp hectopunten > tmp/hectopunten.sql
-psql -h localhost -U postgres -d ndw -f tmp/hectopunten.sql
+psql -h localhost -U postgres -d ndw -f tmp/hectopunten.sql > /dev/null
 
 # VILD TMC-punten
 shp2pgsql -s 28992:4326  -I -c -W UTF-8 ../data/vild/tmcpoint.shp tmcpoints > tmp/tmcpoint.sql
-psql -h localhost -U postgres -d ndw -f tmp/tmcpoint.sql
+psql -h localhost -U postgres -d ndw -f tmp/tmcpoint.sql > /dev/null
 
 # VILD table
-psql -h localhost -U postgres -d ndw -f tmp/vild.sql
+psql -h localhost -U postgres -d ndw -f tmp/vild.sql > /dev/null
 
 # Indexes
-psql -h localhost -U postgres -d ndw -f indexes.sql
+psql -h localhost -U postgres -d ndw -f indexes.sql > /dev/null
 
 #################################################################################
 # Remove temporary files
