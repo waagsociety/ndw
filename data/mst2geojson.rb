@@ -27,7 +27,7 @@ class MST2GeoJSON < ::Ox::Sax
       feature = {
     		:type => "Feature",
     		:properties => {
-    		  id: @data[:id],     
+    		  mst_id: @data[:mst_id],     
     		  name: @data[:name],
           location: @data[:location],
           carriagewy: @data[:carriageway],
@@ -58,7 +58,7 @@ class MST2GeoJSON < ::Ox::Sax
     case @elements[-1]
     when :measurementSiteRecord
       if name == :id
-        @data[:id] = value
+        @data[:mst_id] = value
       end
     end
   end

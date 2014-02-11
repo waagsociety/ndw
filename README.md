@@ -57,10 +57,10 @@ Find out which field to use: `admrichtng`, `rpe_code`, or `pos_tv_wol`.
           ELSE wv2.beginkm * 1000 + afstand - distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) BETWEEN wv.eindkm * 1000 AND wv.beginkm * 1000
           END
         ) AND        
-        m.id = _id;
+        m.mst_id = _id;
     END $$ LANGUAGE plpgsql IMMUTABLE;
       
-    SELECT * FROM mst2wegvak('10223');
+    SELECT * FROM mst2wegvak('RWS01_MONIBAS_0271hrl0261ra');
 
 
     
