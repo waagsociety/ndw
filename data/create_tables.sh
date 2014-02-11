@@ -37,7 +37,7 @@ ogr2ogr -f "ESRI Shapefile" ndw/mst.shp tmp/mst.geojson
 #################################################################################
 # Create PostgreSQL tables, import data, create indexes
 #################################################################################
-
+echo "Importing, please have some patience..."
 # Meetlocaties
 shp2pgsql -s 28992:4326  -I -c -W UTF-8 ndw/mst.shp mst > tmp/mst.sql
 psql -h localhost -U postgres -d ndw -f tmp/mst.sql > /dev/null
@@ -60,6 +60,7 @@ psql -h localhost -U postgres -d ndw -f tmp/vild.sql > /dev/null
 # Indexes
 psql -h localhost -U postgres -d ndw -f indexes.sql > /dev/null
 
+echo "Import complete, thank you!"
 #################################################################################
 # Remove temporary files
 #################################################################################
