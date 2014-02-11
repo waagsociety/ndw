@@ -27,9 +27,7 @@ Find out which field to use: `admrichtng`, `rpe_code`, or `pos_tv_wol`.
   
     
 ```sql
-CREATE TYPE wvktype AS (wvk_id int);
-
-CREATE OR REPLACE FUNCTION mst2wegvak(_id text) 
+CREATE OR REPLACE FUNCTION mst2wvk(_id text) 
 RETURNS  int
 AS $$
 BEGIN
@@ -67,7 +65,7 @@ BEGIN
   );
 END $$ LANGUAGE plpgsql IMMUTABLE;
   
-SELECT * FROM mst2wegvak('RWS01_MONIBAS_0271hrl0261ra');
+SELECT * FROM mst2wvk('RWS01_MONIBAS_0271hrl0261ra');
 ```
 
 
