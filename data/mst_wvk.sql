@@ -36,6 +36,8 @@ BEGIN
   );
 END $$ LANGUAGE plpgsql IMMUTABLE;
 
+DROP TABLE mst_wvk CASCADE;
+
 CREATE TABLE mst_wvk AS
   SELECT * FROM (
     SELECT mst_id, mst2wvk(mst_id) AS wvk_id FROM mst
