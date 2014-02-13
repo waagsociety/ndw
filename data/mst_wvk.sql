@@ -3,6 +3,7 @@
 -- output: 1 wegvak id
 
 --1. voor de meetlocatie pak het VILD punt
+
 --1b. (nog doen) kijk of het meetpunt ligt op een (gehectometriseerde) hoofdweg is of iets anders.
 --2a. pak voor het VILD punt alle wegvakken die overeenkomen met het wegnummer (van het VILD punt)
 --2b. voor het VILD punt pak de matching hectometerpalen  afh van de richting van het meetpunt)
