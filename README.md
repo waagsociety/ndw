@@ -1,6 +1,6 @@
 # Linking NDW and NWB
 
-## Software prerequisites:
+## Software prerequisites
 
 Install PostgreSQL/PostGIS, Ruby, Ruby gems:
 
