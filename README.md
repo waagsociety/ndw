@@ -55,9 +55,14 @@ BEGIN
     AND
     wv.rpe_code = wv2.rpe_code
     AND (
-      CASE wv.rpe_code WHEN 'R' 
-      THEN wv2.beginkm * 1000 + afstand + distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) BETWEEN wv.beginkm * 1000 AND wv.eindkm * 1000
-      ELSE wv2.beginkm * 1000 + afstand - distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) BETWEEN wv.eindkm * 1000 AND wv.beginkm * 1000
+      CASE 
+        wv.rpe_code WHEN 'R' 
+      THEN 
+        wv2.beginkm * 1000 + afstand + distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) 
+          BETWEEN wv.beginkm * 1000 AND wv.eindkm * 1000
+      ELSE 
+        wv2.beginkm * 1000 + afstand - distance * (CASE wv.rijrichtng WHEN 'H' THEN 1 ELSE -1 END) 
+          BETWEEN wv.eindkm * 1000 AND wv.beginkm * 1000
       END
     ) AND        
     m.mst_id = _id
