@@ -42,7 +42,7 @@ BEGIN
 	RAISE NOTICE 'wegDirection: %, hloc: %', wegDirection, hLoc;
 	
 	--2. zoek het basis hectometerpaaltje, deze is afhankelijk van de richting van het meetpunt 
-	select wegvakken.wvk_id as wegvakid, wegnummer, hectomtrng, rijrichtng, afstand, beginkm from wegvakken JOIN hectopunten ON hectopunten.wvk_id = wegvakken.wvk_id where wegnummer = wegId AND hectomtrng = hLoc AND rijrichtng = wegDirection INTO paaltje;
+select wegvakken.wvk_id as wegvakid, wegnummer, hectomtrng, rijrichtng, afstand, beginkm from wegvakken JOIN hectopunten ON hectopunten.wvk_id = wegvakken.wvk_id where (wegnummer = wegId OR wegnummer = roadnumber) AND hectomtrng = hLoc AND rijrichtng = wegDirection INTO paaltje;
 	RAISE NOTICE 'wvk_id hectometerpaal: %', paaltje.wegvakid;
 
 	-- 3. bereken de plek van het meetpunt als de basishectometerpaal in meters en tel daar de offset van het meetpunt bij op
