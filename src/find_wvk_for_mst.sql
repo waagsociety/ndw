@@ -10,6 +10,7 @@ DECLARE
 meetpunt RECORD;
 vildlocatie RECORD;
 paaltje RECORD;
+wegvak RECORD;
 
 wegId text;
 wegDirection text;
@@ -53,6 +54,9 @@ BEGIN
 	RAISE NOTICE 'locatie meetpunt op weg % in meters: %', wegId, locTcm;
 
 	-- 4. zoek het ene wegvak waarbij de rijrichting + wegnummer hetzelfde zijn, en de loc_tcm ligt tussen beginkm en eindkm 
-	RETURN (select wvk_id from wegvakken where wegnummer = wegId AND rijrichtng = wegDirection AND locTcm BETWEEN beginkm * 1000 AND eindkm * 1000);
+	select wvk_id, beginkm, eindkm from wegvakken where wegnummer = wegId AND rijrichtng = wegDirection AND locTcm BETWEEN beginkm * 1000 AND eindkm * 1000 INTO wegvak;
+	
+	RAISE NOTICE 'beginpunt: % in eindpunt: %', wegvak.beginkm, wegvak.eindkm;
+	RETURN wegvak.wvk_id;
 
 END $$ LANGUAGE plpgsql IMMUTABLE;
