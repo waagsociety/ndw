@@ -25,35 +25,38 @@ BEGIN
 				select 'negative' INTO chainDirection;
 			END IF;
 		ELSE
-			IF vildlocatie.hend_pos > -1 AND vildref.hend_pos > -1 THEN
-				IF vildlocatie.hend_pos < vildref.hend_pos THEN
+			IF vildlocatie.hstart_neg > -1 AND vildref.hstart_neg > -1 THEN
+				IF vildlocatie.hstart_neg < vildref.hstart_neg THEN
 					select 'positive' INTO chainDirection;
 				ELSE
 					select 'negative' INTO chainDirection;
 				END IF;
 			END IF;
 		END IF;
-	ELSE	
-		-- calculate from negative
-		IF vildlocatie.neg_off > -1 THEN
-			select hstart_pos, hstart_neg from vild where loc.nr = vildlocatie.neg_off INTO vildref;
-			IF vildlocatie.hstart_pos > -1 AND vildref.hstart_pos > -1 THEN
-				IF vildlocatie.hstart_pos < vildref.hstart_pos THEN
-					select 'negative' INTO chainDirection;
-				ELSE
-					select 'positive' INTO chainDirection;
-				END IF;
+	END IF;
+
+	IF chainDirection = 'positive' OR chainDirection = 'negative'
+		return chainDirection
+	END;
+
+	-- calculate from negative
+	IF vildlocatie.neg_off > -1 THEN
+		select hstart_pos, hstart_neg from vild where loc.nr = vildlocatie.neg_off INTO vildref;
+		IF vildlocatie.hstart_pos > -1 AND vildref.hstart_pos > -1 THEN
+			IF vildlocatie.hstart_pos < vildref.hstart_pos THEN
+				select 'negative' INTO chainDirection;
 			ELSE
-				IF vildlocatie.hend_pos > -1 AND vildref.hend_pos > -1 THEN
-					IF vildlocatie.hend_pos < vildref.hend_pos THEN
-						select 'negative' INTO chainDirection;
-					ELSE
-						select 'positive' INTO chainDirection;
-					END IF;
+				select 'positive' INTO chainDirection;
+			END IF;
+		ELSE
+			IF vildlocatie.hstart_neg > -1 AND vildref.hstart_neg > -1 THEN
+				IF vildlocatie.hstart_neg < vildref.hstart_neg THEN
+					select 'negative' INTO chainDirection;
+				ELSE
+					select 'positive' INTO chainDirection;
 				END IF;
 			END IF;
 		END IF;
-	
 	END IF;
 
 	return chainDirection;
