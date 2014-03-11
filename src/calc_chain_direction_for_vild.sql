@@ -35,7 +35,7 @@ BEGIN
 		END IF;
 	END IF;
 
-	IF chainDirection = 'positive' OR chainDirection = 'negative'
+	IF chainDirection = 'positive' OR chainDirection = 'negative' THEN
 		return chainDirection
 	END;
 
