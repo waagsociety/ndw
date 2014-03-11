@@ -32,7 +32,7 @@ wget ftp://83.247.110.3/measurement.gz -P tmp
 # Create GeoJSON from NDW DATEX II XML
 ruby mst2geojson.rb > tmp/mst.geojson
 
-ogr2ogr -f "ESRI Shapefile" ndw/mst.shp tmp/mst.geojson
+ogr2ogr -f "ESRI Shapefile" ndw/mst.shp ndw/mst.geojson
 
 #################################################################################
 # Create PostgreSQL tables, import data, create indexes
