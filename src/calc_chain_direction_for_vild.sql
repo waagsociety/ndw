@@ -41,7 +41,7 @@ BEGIN
 
 	-- calculate from negative
 	IF vildlocatie.neg_off > -1 THEN
-		select hstart_pos, hstart_neg from vild where loc.nr = vildlocatie.neg_off INTO vildref;
+		select hstart_pos, hstart_neg from vild where loc_nr = vildlocatie.neg_off INTO vildref;
 		IF vildlocatie.hstart_pos > -1 AND vildref.hstart_pos > -1 THEN
 			IF vildlocatie.hstart_pos < vildref.hstart_pos THEN
 				select 'negative' INTO chainDirection;
