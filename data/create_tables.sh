@@ -30,17 +30,15 @@ ruby vild_sql.rb > tmp/vild.sql
 wget ftp://83.247.110.3/measurement.gz -P tmp
 
 # Create GeoJSON from NDW DATEX II XML
-ruby mst2geojson.rb > tmp/mst.geojson
-
-ogr2ogr -f "ESRI Shapefile" ndw/mst.shp ndw/mst.geojson
+ruby mst2geojson.rb > ndw/mst.geojson
 
 #################################################################################
 # Create PostgreSQL tables, import data, create indexes
 #################################################################################
 echo "Importing, please have some patience..."
 # Meetlocaties
-shp2pgsql -s 28992:4326  -I -c -W UTF-8 ndw/mst.shp mst > tmp/mst.sql
-psql -h localhost -U postgres -d ndw -f tmp/mst.sql > /dev/null
+psql -h localhost -U postgres -d ndw -f mst.sql > /dev/null
+ruby import_mst_geojson.rb ndw/mst.geojson
 
 # Wegvakken
 shp2pgsql -s 28992:4326  -I -c -W UTF-8 nwb/Wegvakken.shp wegvakken > tmp/wegvakken.sql

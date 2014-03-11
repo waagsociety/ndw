@@ -16,6 +16,28 @@ class MST2GeoJSON < ::Ox::Sax
     
   def start_element(name)
     @elements << name
+    
+    case @elements[-1]
+    when :measurementSpecificCharacteristics
+      if not @data.has_key? :characteristics
+        @data[:characteristics] = []
+      end      
+    
+      # measurementSpecificCharacteristics are nested twice:
+      # <measurementSpecificCharacteristics index="n">
+      #   <measurementSpecificCharacteristics>
+      #     <... />
+      #   </measurementSpecificCharacteristics>
+      # </measurementSpecificCharacteristics>
+      if not @elements[-2] == :measurementSpecificCharacteristics
+        @data[:characteristics] << {}
+      end 
+    when :lengthCharacteristic
+      if not @data[:characteristics][-1].has_key? :lengthCharacteristics
+        @data[:characteristics][-1][:lengthCharacteristics] = []
+      end
+      @data[:characteristics][-1][:lengthCharacteristics] << {}
+    end
   end
   
   def end_element(name)
@@ -30,9 +52,13 @@ class MST2GeoJSON < ::Ox::Sax
     		  mst_id: @data[:mst_id],     
     		  name: @data[:name],
           location: @data[:location],
-          carriagewy: @data[:carriageway],
+          carriageway: @data[:carriageway],
           direction: @data[:direction],
-          distance: @data[:distance]   
+          distance: @data[:distance],
+          method: @data[:method],
+          equipment: @data[:equipment],
+          lanes: @data[:lanes],
+          characteristics: @data[:characteristics]
     		},
     		:geometry =>
     		{
@@ -59,7 +85,7 @@ class MST2GeoJSON < ::Ox::Sax
     when :measurementSiteRecord
       if name == :id
         @data[:mst_id] = value
-      end
+      end    
     end
   end
   
@@ -78,6 +104,8 @@ class MST2GeoJSON < ::Ox::Sax
     when :value
       if @elements.include? :measurementSiteName
         @data[:name] = value
+      elsif @elements.include? :measurementEquipmentTypeUsed
+        @data[:equipment] = value
       end
     when :carriageway
       @data[:carriageway] = value
@@ -85,6 +113,35 @@ class MST2GeoJSON < ::Ox::Sax
       @data[:direction] = value      
     when :offsetDistance      
       @data[:distance] = value.to_i
+    when :measurementSiteNumberOfLanes
+      @data[:lanes] = value.to_i
+    when :computationMethod
+      @data[:method] = value      
+    when :accuracy
+      @data[:characteristics][-1][:accuracy] = value.to_f
+    when :period
+      @data[:characteristics][-1][:period] = value.to_f           
+    when :specificLane
+      @data[:characteristics][-1][:lane] = value[4..-1].to_i
+    when :specificMeasurementValueType
+      @data[:characteristics][-1][:type] = (value == "trafficSpeed") ? "speed" : "flow"
+    when :vehicleType
+      @data[:characteristics][-1][:vehicleType] = value
+    when :comparisonOperator
+      operator = value
+      case value
+      when "greaterThan"
+        operator = ">"
+      when "greaterThanOrEqualTo"
+        operator = ">="
+      when "lessThan"
+        operator = "<"        
+      when "lessThanOrEqualTo"
+        operator = "<="
+      end
+      @data[:characteristics][-1][:lengthCharacteristics][-1][:operator] = operator
+    when :vehicleLength
+      @data[:characteristics][-1][:lengthCharacteristics][-1][:length] = value.to_i
     end
 
   end
