@@ -36,8 +36,8 @@ BEGIN
 	END IF;
 
 	IF chainDirection = 'positive' OR chainDirection = 'negative' THEN
-		return chainDirection
-	END;
+		return chainDirection;
+	END IF;
 
 	-- calculate from negative
 	IF vildlocatie.neg_off > -1 THEN
@@ -59,6 +59,6 @@ BEGIN
 		END IF;
 	END IF;
 
-	return chainDirection;
+	RETURN chainDirection;
 
 END $$ LANGUAGE plpgsql IMMUTABLE;
