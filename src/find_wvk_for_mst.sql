@@ -18,8 +18,8 @@ locTcm int;
 cw text;
 
 BEGIN
-	select gid, location, direction,  carriagewy, distance as offset from mst where mst_id = _id  INTO meetpunt;
-	RAISE NOTICE 'gid: %, location: % measurement direction: %, offset: % carriagewy: %', meetpunt.gid, meetpunt.location, meetpunt.direction, meetpunt.offset, meetpunt.carriagewy;
+	select gid, location, direction,  carriageway, distance as offset from mst where mst_id = _id  INTO meetpunt;
+	RAISE NOTICE 'gid: %, location: % measurement direction: %, offset: % carriageway: %', meetpunt.gid, meetpunt.location, meetpunt.direction, meetpunt.offset, meetpunt.carriageway;
 	
 	-- 1. pak het VILD punt met alle relevante informatie
 	select loc_nr, loc_type, vild.roadnumber, hstart_pos, hstart_neg, pos_off, neg_off from vild where loc_nr = meetpunt.location INTO vildlocatie;
@@ -28,7 +28,7 @@ BEGIN
 	SELECT calc_chain_direction_for_vild(vildlocatie.loc_nr) INTO chainDirection;
 	SELECT (chainDirection = meetpunt.direction) into relativeTrafficDirection;
   	SELECT reformat_roadnumber(vildlocatie.roadnumber) INTO roadNumber;
-	SELECT reformat_cw(meetpunt.carriagewy) INTO cw;
+	SELECT reformat_cw(meetpunt.carriageway) INTO cw;
 	--1d. select the base hectoNumber based on the measurement direction
 	SELECT vildlocatie.hstart_pos INTO hLoc;
 	IF meetpunt.direction = 'negative' THEN
@@ -66,5 +66,12 @@ BEGIN
 	END IF;
 	
 	RAISE NOTICE 'beginpunt: % in eindpunt: %, baansubsoort: %', wegvak.beginkm, wegvak.eindkm, wegvak.baansubsrt;
+	
+	--if wegvak is still null, dynamic segmentation does not work, so we fall back to coordinates
+	IF wegvak IS NULL THEN
+		select wegvakken.wvk_id from wegvakken ORDER BY wegvakken.geom <-> (select geom from mst where mst_id = _id) LIMIT 1 INTO wegvak; 
+	
+	RAISE NOTICE 'Closest based on coordinates: %', wegvak.wvk_id;
+	END IF;
 	RETURN wegvak.wvk_id;
 END $$ LANGUAGE plpgsql IMMUTABLE;
