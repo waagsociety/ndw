@@ -1,7 +1,8 @@
 require 'json'
 require 'sequel'
 
-DB = Sequel.connect("postgres://postgres:postgres@localhost/ndw")
+
+DB = Sequel.connect("postgres://#{ENV['NDWUSER']}:#{ENV['NDWPASSWORD']}@#{$NDWDBHOST}/ndw")
 
 INSERT = <<-SQL
 INSERT INTO mst (mst_id, name, location, carriageway, direction, distance, method, equipment, lanes, characteristics, geom) VALUES
